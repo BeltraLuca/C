@@ -1,0 +1,6 @@
+all:main
+main: 13Giu17.c
+	gcc -o 13Giu17 13Giu17.c
+all:main
+main: 14Giu17.c
+	gcc -o 14Giu17 14Giu17.c

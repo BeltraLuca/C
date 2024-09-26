@@ -1,0 +1,3 @@
+all:main
+main: 12Giu17.c
+	gcc -o 12Giu17 12Giu17.c

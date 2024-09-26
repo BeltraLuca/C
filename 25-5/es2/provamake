@@ -1,0 +1,96 @@
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C
+ALL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     SET  .C

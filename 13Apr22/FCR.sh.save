@@ -1,0 +1,27 @@
+#!/bin/sh
+
+cd $2
+for I in *
+do
+	if test -f $I
+	then
+		echo $I è un file
+		if test ! -r $i
+		then
+			echo $i è un file non leggibile
+			continue
+		fi
+		NR=`wc -l < $I` 
+		if test $NR -eq $1
+		then
+			echo `pwd`/$I >> $3
+		fi
+
+	fi
+	if test -d $I
+	then
+		echo $I è una directory, entro
+		FCR.sh $1 `pwd`/$I $3
+	fi
+done
+exit 0

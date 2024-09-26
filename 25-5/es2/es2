@@ -1,0 +1,3 @@
+TLL: MAIN
+MAIN:   SET  .C
+	GCC -O   SET     S T  .C
