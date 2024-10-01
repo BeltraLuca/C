@@ -15,17 +15,18 @@ typedef struct {
 
 int main (int argc, char **argv)
 {
-        char** linea;    //buffer 256
-	int N;          // numero di file 
-	int pid;        // pid per fork 
-	pipe_t *pipes;  // array di pipe 
-        pipe_t annuncio;
-	int i,j;        // contatori
-	int fd;         // file descriptor 
+        char car;                       //carattere
+        char* linea;                    
+	int N;                          // numero di file 
+	int pid;                        // pid per fork 
+	pipe_t *pipes;                  // array di pipe 
+        pipe_t *comunicazione;          //array di pipe per comunicazione padre figlio
+	int i,j,o;                        // contatori
+	int fd;                         // file descriptor 
 	int pidFiglio, status, ritorno; // per valore di ritorno figli 
-	s_occ *cur;     // array di strutture usate dal figlio corrente 
-	int nr;         // variabile per salvare valori di ritorno di read su pipe 
-        int min;        //variabile mantenuta da ciascun figlio, mantiene il valore minimo mandato dal padre
+	s_occ *cur;                     // array di strutture usate dal figlio corrente 
+	int nr;                         // variabile per salvare valori di ritorno di read su pipe 
+        int min=__INT32_MAX__;                        //variabile mantenuta da ciascun figlio, mantiene il valore minimo mandato dal padre
 
 // controllo sul numero di parametri almeno 2 file
 if (argc < 3)
@@ -45,23 +46,29 @@ if ((pipes=(pipe_t *)malloc(N*sizeof(pipe_t))) == NULL)
         exit(4);
 }
 
+linea=calloc(255,sizeof(char));
+// allocazione pipe 
+if ((comunicazione=(pipe_t *)malloc(N*sizeof(int))) == NULL)
+{
+        printf("Errore allocazione pipe\n");
+        exit(4);
+}
+
 // creazione pipe 
-for (i=0;i<N;i++)
+for(i=0;i<N;i++){
         if(pipe(pipes[i])<0)
         {
                 printf("Errore creazione pipe\n");
                 exit(5);
         }
 
-if(pipe(annuncio)<0)
+        if(pipe(comunicazione[i])<0)
         {
                 printf("Errore creazione pipe\n");
                 exit(5);
         }
-linea=calloc(256,sizeof(char*));
-for(i=0;i<256;i++){
-        linea[i]=calloc(256,sizeof(char)); 
 }
+
 // creazione figli 
 for (i=0;i<N;i++)
 {
@@ -78,16 +85,19 @@ for (i=0;i<N;i++)
                 
                 for (j=0;j<N;j++)
                 {
-                        if (j!=i)
+                        if (j!=i){
                                 close (pipes[j][1]);
-                        if ((i == 0) || (j != i-1))
+                                close(comunicazione[j][0]);
+                        }
+                        if ((i == 0) || (j != i-1)){
                                 close (pipes[j][0]);
+                        }
+                        
+                        close(comunicazione[j][1]);
+
                 }
 
-                if(i!=0){
-                        close(annuncio[0]);
-                }
-                close(annuncio[1]);
+                close(comunicazione[i][1]);
 
                 // allocazione dell'array di strutture specifico di questo figlio 
                 // creiamo un array di dimensione i+1 anche se leggeremo i strutture, dato che poi ci servira' riempire la i+1-esima struttura! 
@@ -107,9 +117,9 @@ for (i=0;i<N;i++)
                         exit(N+1);
                 }
                 j=0;
-                while(read(fd,&linea[cur[i].c2][j],sizeof(char))>0)
+                while(read(fd,&car,sizeof(char))>0)
                 {     
-                        if(linea[cur[i].c2][j]=='\n'){
+                        if(car=='\n'){
                                 (cur[i].c2)++;
                                 j=0;
                         }else{
@@ -129,15 +139,28 @@ for (i=0;i<N;i++)
                 }
                 write(pipes[i][1],cur,(i+1)*sizeof(s_occ));
                 int s;
-                if(i==0){
-                        nr=read(annuncio[0],&s,sizeof(int));
-                }else{
-                        nr=read(pipes[i-1][0],&s,sizeof(int));  
-                }
-
+                nr=read(comunicazione[i][0],&s,sizeof(int));
                 
-                printf("la linea %d del figlio %d e' %s\n",(s+1),getpid(),linea[s]);
-                write(pipes[i][1],&s,sizeof(int));
+                lseek(fd,0,SEEK_SET);
+                j=0;
+                o=0;
+                while(read(fd,&car,sizeof(char))>0)
+                {     
+                        
+                        if(j==s){
+                                linea[o]=car;
+                                o++;
+                                if(car=='\n'){
+                                        linea[o]=(char)0;
+                                        break;
+                                }
+                        }
+                        if(car=='\n'){
+                                j++;
+                        }
+                    
+                }
+                printf("la linea %d del figlio %d e' %s\n",(s+1),getpid(),linea);
                 exit(i); // ogni figlio deve ritornare al padre il proprio indice 
         }
 } 
@@ -168,11 +191,14 @@ nr=nr/sizeof(s_occ);
 printf("Padre ha letto un numero di strutture %d\n", nr);
 // il padre deve stampare i campi delle strutture ricevute
 for(i=0;i<N;i++){
+        
     if(min>cur[i].c2){
+        
         min=cur[i].c2;
     }
     printf("Il figlio di indice %d e pid %ld ha trovato %d linee nel file %s\n", i, cur[i].c1, cur[i].c2+1, argv[i+1]);
 }
+printf("il minimo =%d\n",min);
 
 // il padre deve stampare i campi delle strutture ricevute
 for(i=0;i<N;i++){
@@ -182,7 +208,10 @@ for(i=0;i<N;i++){
     
 }
 
-write(annuncio[1],&min,sizeof(int));
+for(int i=0;i<N;i++){
+        write(comunicazione[i][1],&min,sizeof(int));
+}
+
 // Il padre aspetta i figli 
 for (i=0; i < N; i++)
 {
