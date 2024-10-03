@@ -227,7 +227,7 @@ for (i=0; i < N; i++)
         else
         {
                 ritorno=(int)((status >> 8) & 0xFF);
-                printf("Il figlio con pid=%d ha ritornato %d (se > di %d problemi)\n", pidFiglio, ritorno, N-1);
+                printf("Il figlio con pid=%d ha ritornato %d \n", pidFiglio, ritorno);
         }
 }
 exit(0);

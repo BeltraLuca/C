@@ -1,43 +1,57 @@
 #!/bin/sh
 
-#instanzio la gerarchia
-D=$1
-CONT=0
-tutti=
 
-cd $D
+#instanzio la gerarchia
+G=$1
+cont=0
+tutti=
+temp="/tmp/nomiRelativiSemplici"
+
+cd $G
+echo "----------------------------------------------------------------------------------------------------------------------------"
+echo "\nRicerca nella directory `pwd`\n"
 #sposto in avanti i parametri
 shift
 
-H=`expr $# / 2 `
+M=`expr $# / 2 `
 #file nella cartella
-for File in *
+for F in *
 do
-	if test -f $File
+	if test -f $F
 	then
 		#file parametri
 		for f in $*
 		do
-			if test "$File" = "$f"
+			if test "$F" = "$f"
 			then
 				tutti="$tutti $f"
-				CONT=` expr $CONT + 1 `
+				cont=` expr $cont + 1 `
 				break
 			fi
 		done
 	fi
 done
 
-if test $CONT -ge $H
+echo "**********Dati sulla directory************************************ "
+if test $cont -ge $M
 then
-	echo "nella directory corrente $PWD sono stati trovati $CONT file"
-	main $tutti
+
+	
+	echo "# Nella directory `pwd` sono stati trovati $cont file, le occorrenze di nomi sono quindi maggiori e/o uguali a $M                                  "
+	echo $tutti >> $temp
+	echo "# I file trovati nella seguente directory sono $tutti                                                                        "
+
+else
+	echo "# Non sono state trovate occorenze o sono inferiori alla metà dei nomi relativi aggiunti"
 fi
+echo "----------------------------------------------------------------------------------------------------------------------------\n"
 
 for Dir in *
 do
+
 	if test -d $Dir -a -x $Dir
 	then
+		echo "RICERCA SUCCESSIVA......"
 		FCR.sh $Dir $*
 	fi 
 done

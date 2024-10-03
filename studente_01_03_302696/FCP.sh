@@ -3,7 +3,7 @@
 case $# in
 0|1|2) 	echo Errore: numero parametri è $# quindi pochi parametri.
 	exit 1;;
-*) 	echo DEBUG-OK: da qui in poi proseguiamo con $# parametri ;;
+*) 	#DEBUG-OK: da qui in poi proseguiamo con $# parametri ;;
 esac
 
 #Controllo primo parametro sia una directory
@@ -17,7 +17,7 @@ case $1 in
 	exit 3;;
 esac
 
-D=$1 #salviamo il primo parametro (N.B. nella variabile il cui nome viene specificato nel testo)
+G=$1 #salviamo il primo parametro (N.B. nella variabile il cui nome viene specificato nel testo)
 
 #quindi ora possiamo usare il comando shift
 shift
@@ -38,6 +38,25 @@ PATH=`pwd`:$PATH
 export PATH
 
 #invochiamo  
-FCR.sh $D $*	#in alternativa invece che $* si poteva scrivere $1 e $2
+FCR.sh $G $*	#in alternativa invece che $* si poteva scrivere $1 e $2
 
-main $D
+echo "Ricerca conclusa"
+
+files=""
+
+for i
+do
+	cat /tmp/nomiRelativiSemplici | grep -w $i >> /dev/null
+	if test $? -eq 0
+	then
+		echo "_____________$i verrà usato______________"
+		files="$files $i"
+	else
+		echo "_____________$i non verrà usato_______________"
+	fi
+done
+
+rm /tmp/nomiRelativiSemplici
+
+echo "\nInizio FILE C\n"
+maino $files
