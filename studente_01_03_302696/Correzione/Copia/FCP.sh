@@ -38,5 +38,25 @@ PATH=`pwd`:$PATH
 export PATH
 
 #invochiamo 
-FCR.sh $G "" `pwd` $*
+FCR.sh $G $*
 
+echo "Ricerca conclusa"
+
+files=""
+
+for i
+do
+	cat /tmp/nomiRelativiSemplici | grep -w $i >> /dev/null
+	if test $? -eq 0
+	then
+		echo "_____________$i verrà usato______________"
+		files="$files $i"
+	else
+		echo "_____________$i non verrà usato_______________"
+	fi
+done
+
+rm /tmp/nomiRelativiSemplici
+
+echo "\nInizio FILE C\n"
+maino $files

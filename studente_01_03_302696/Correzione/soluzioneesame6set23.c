@@ -46,7 +46,10 @@ if ((pipes=(pipe_t *)malloc(N*sizeof(pipe_t))) == NULL)
         exit(4);
 }
 
-linea=calloc(255,sizeof(char));
+if(linea=calloc(250,sizeof(char))==NULL){
+        printf("Errore allocazione linea\n");
+        exit(4);
+}
 // allocazione pipe 
 if ((comunicazione=(pipe_t *)malloc(N*sizeof(int))) == NULL)
 {
@@ -96,8 +99,6 @@ for (i=0;i<N;i++)
                         close(comunicazione[j][1]);
 
                 }
-
-                close(comunicazione[i][1]);
 
                 // allocazione dell'array di strutture specifico di questo figlio 
                 // creiamo un array di dimensione i+1 anche se leggeremo i strutture, dato che poi ci servira' riempire la i+1-esima struttura! 
