@@ -37,6 +37,6 @@ done
 PATH=`pwd`:$PATH
 export PATH
 
-#invochiamo 
-FCR.sh $G "" `pwd` $*
+#invochiamo
+FCR.sh $G "" $G $*			#il primo parametro è la Gerarchia principale G il secondo parametro è il percorso attuale  il terzo parametro è il percorso attuale per arrivare alla gerarchia principale
 

@@ -26,7 +26,7 @@ int main (int argc, char **argv)
 	int pidFiglio, status, ritorno; // per valore di ritorno figli 
 	s_occ *cur;                     // array di strutture usate dal figlio corrente 
 	int nr;                         // variabile per salvare valori di ritorno di read su pipe 
-        int min=__INT32_MAX__;                        //variabile mantenuta da ciascun figlio, mantiene il valore minimo mandato dal padre
+        long int min=__INT64_MAX__;                        //variabile mantenuta da ciascun figlio, mantiene il valore minimo mandato dal padre
 
 // controllo sul numero di parametri almeno 2 file
 if (argc < 3)
@@ -46,12 +46,12 @@ if ((pipes=(pipe_t *)malloc(N*sizeof(pipe_t))) == NULL)
         exit(4);
 }
 
-if(linea=calloc(250,sizeof(char))==NULL){
+if((linea=calloc(250,sizeof(char)))==NULL){
         printf("Errore allocazione linea\n");
         exit(4);
 }
 // allocazione pipe 
-if ((comunicazione=(pipe_t *)malloc(N*sizeof(int))) == NULL)
+if ((comunicazione=(pipe_t *)malloc(N*sizeof(pipe_t))) == NULL)
 {
         printf("Errore allocazione pipe\n");
         exit(4);
@@ -139,8 +139,8 @@ for (i=0;i<N;i++)
                         }
                 }
                 write(pipes[i][1],cur,(i+1)*sizeof(s_occ));
-                int s;
-                nr=read(comunicazione[i][0],&s,sizeof(int));
+                long int s;
+                nr=read(comunicazione[i][0],&s,sizeof(long int));
                 
                 lseek(fd,0,SEEK_SET);
                 j=0;
@@ -161,7 +161,7 @@ for (i=0;i<N;i++)
                         }
                     
                 }
-                printf("la linea %d del figlio %d e' %s\n",(s+1),getpid(),linea);
+                printf("la linea %ld del figlio %d e' %s\n",(s+1),getpid(),linea);
                 exit(i); // ogni figlio deve ritornare al padre il proprio indice 
         }
 } 
@@ -192,14 +192,14 @@ nr=nr/sizeof(s_occ);
 printf("Padre ha letto un numero di strutture %d\n", nr);
 // il padre deve stampare i campi delle strutture ricevute
 for(i=0;i<N;i++){
-        
+    printf("\nil padre legge la struttura figlio %ld: \ncur[%d].c1=%ld \ncur[%d].c2=%d\n\n",cur[i].c1,i,cur[i].c1,i,cur[i].c2);    
     if(min>cur[i].c2){
         
         min=cur[i].c2;
     }
     printf("Il figlio di indice %d e pid %ld ha trovato %d linee nel file %s\n", i, cur[i].c1, cur[i].c2+1, argv[i+1]);
 }
-printf("il minimo =%d\n",min);
+printf("il minimo =%ld\n",min);
 
 // il padre deve stampare i campi delle strutture ricevute
 for(i=0;i<N;i++){
@@ -210,7 +210,7 @@ for(i=0;i<N;i++){
 }
 
 for(int i=0;i<N;i++){
-        write(comunicazione[i][1],&min,sizeof(int));
+        write(comunicazione[i][1],&min,sizeof(long int));
 }
 
 // Il padre aspetta i figli 
