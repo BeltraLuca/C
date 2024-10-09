@@ -26,7 +26,7 @@ shift
 for i 
 do
 	case $i in
-	/*) echo "$i non è un nome relativo semplice"  
+	*/*) echo "$i non è un nome relativo semplice"  
 	     exit 4;;
 	*)   #echo OK $i stringa corretta  
 		;;
@@ -37,6 +37,7 @@ done
 PATH=`pwd`:$PATH
 export PATH
 
+
 #invochiamo
-FCR.sh $G "" $G $*			#il primo parametro è la Gerarchia principale G il secondo parametro è il percorso attuale  il terzo parametro è il percorso attuale per arrivare alla gerarchia principale
+FCR.sh $G $*			#il primo parametro è la Gerarchia principale G il secondo parametro è il percorso attuale  il terzo parametro è il percorso attuale per arrivare alla gerarchia principale
 

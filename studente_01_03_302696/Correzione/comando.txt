@@ -1,0 +1,1 @@
+sudo ./FCP.sh /home/luca/Desktop/tuttiglies/C studente_01_03_302696/Correzione/Copia/FCP.sh studente_01_03_302696/Correzione/Copia/bau.sh

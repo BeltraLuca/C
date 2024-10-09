@@ -1,17 +1,13 @@
 #!/bin/sh
 
 #instanzio la gerarchia
-direc=$1			#la cartella corrente
 cont=0				#contatore di occorrenze
 tutti=""			#variabile contenente i parametri trovati
-P=$2				#è il percorso attuale del file ricorsivo
-G=$3				#memorizza il percorso principale della gerarchia mandata come parametro quando è stato richiamato FCP.sh
+G=$1				#memorizza il percorso principale della gerarchia mandata come parametro quando è stato richiamato FCP.sh
 
-cd $direc			#entro nella cartella
+cd $G			#entro nella cartella
 
 #sposto in avanti i parametri
-shift
-shift
 shift
 
 n=$#						#ho una variabile n perchè ad estrarre il modulo $# mi dava errore
@@ -27,7 +23,7 @@ do
 		for f in $*
 		do
 			#verifica dei nomi relativi semplici
-			if test "$P/$F" = "$f"				#verifico che il file attuale sia tra i nomi specificati come parametro dall'utente
+			if test "$F" = "$f"				#verifico che il file attuale sia tra i nomi specificati come parametro dall'utente
 			then
 				tutti="$tutti $f"			#aggiungo il parametro in una variabile $tutti che verrà poi mandata dopo opportuna verifica al main
 				cont=` expr $cont + 1 `			#conto quanti parametri sono già stati trovati
@@ -43,16 +39,8 @@ do
 
         if test -d "$Dir" -a -x "$Dir"
         then
-		o=$P							#salvo il percorso attuale in modo che, conclusa la ricorsione successiva, il programma possa tornare a verificare le altre directory della directory attuale
-									#es. o=Correzione	-->	P=Correzione/Copia	-->	P=$o (conclusa la ricerca su copia, P torna P=Correzione e può controllare le altre directory
-                case $P in
-                "") P="$Dir";;						#il primo ciclo del FCR.sh ha la variabile P vuota quindi la inizializzo 
-                *) P="$P"/"$Dir";;					#aggiunge al percorso della ricorsione precedente la nuova cartella
-		esac 
-                FCR.sh "$Dir" "$P" "$G" $*				#fa partire un altra ricorsione passando come parametri $Dir = la nuova cartella dove accedere, $P = il percorso dalla cartella originale G alla -
-									#- cartella attuale $orig=il percorso assoluto per tornare alla cartella originale G
-		P=$o							#concluso FCR.sh reimposta il percorso precedente
-        fi
+                FCR.sh "$G/$Dir" $*
+	fi
 done
 
 
